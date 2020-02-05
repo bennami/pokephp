@@ -12,7 +12,7 @@ $pSpecies = json_decode($Species);
 echo $pObject->name;
 $pokeEvName = $pSpecies->evolves_from_species->name;
 $pokeIcon = $pObject->sprites->front_default;
-
+$id = $pObject->id;
 $allMoves= array();
 
 for($i=0; $i< count($pObject->moves);$i++){
@@ -28,6 +28,14 @@ echo implode("</br>",$fourMoves);
         $pObject->moves[$value]->move->name;
     }
 
+//getting pokedescription
+for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
+    if ($pSpecies->flavor_text_entries[$x]->language->name === "en") {
+      $pokeDescription = $pSpecies->flavor_text_entries[$x]->flavor_text;
+    }
+}
+
+echo  $pokeDescription;
 
 
 //if(isset($_GET["name"])){
@@ -67,9 +75,9 @@ echo implode("</br>",$fourMoves);
     </section>
 
     <section class="P2">
-<p<?echo $pokeEvName ?>></p>
+    <p<?php echo $pokeEvName ?>></p>
         <section class="Descriptionbox">
-            <p class="description"></p>
+            <p class="description" <?php  echo  $pokeDescription ?>></p>
         </section>
 
         <section class="movesList">
