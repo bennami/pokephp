@@ -10,8 +10,8 @@ $pSpecies = json_decode($Species);
 //var_dump($pObject);
 
 echo $pObject->name;
-echo $pSpecies->evolves_from_species->name;
-echo $pObject->sprites->front_default;
+$pokeEvName = $pSpecies->evolves_from_species->name;
+$pokeIcon = $pObject->sprites->front_default;
 
 $allMoves= array();
 
@@ -19,9 +19,16 @@ for($i=0; $i< count($pObject->moves);$i++){
     array_push($allMoves, $pObject->moves[$i]->move->name);
 }
 
-
+//randomize, get the minimum or max 4 moves of the allMoves length
 $fourMoves = array_rand($allMoves, min(4, count($allMoves)));
 echo implode("</br>",$fourMoves);
+
+
+    foreach ($fourMoves  as $value) {
+        $pObject->moves[$value]->move->name;
+    }
+
+
 
 //if(isset($_GET["name"])){
   //  echo $name;
@@ -47,7 +54,7 @@ echo implode("</br>",$fourMoves);
 <section class="container">
     <section class="P1">
         <section class="pokemonIcon">
-            <img src="" alt="Poke icon" class="pokeIcon">
+            <img src="<?php echo $pokeIcon ?>" alt="Poke icon" class="pokeIcon">
             <p class="pokeName"></p>
         </section>
 
@@ -60,7 +67,7 @@ echo implode("</br>",$fourMoves);
     </section>
 
     <section class="P2">
-
+<p<?echo $pokeEvName ?>></p>
         <section class="Descriptionbox">
             <p class="description"></p>
         </section>
