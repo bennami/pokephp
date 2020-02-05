@@ -1,12 +1,32 @@
 <?php
-
-//get input user
-
+ini_set("display_errors", "1");
+//get input user and pokeapi
 $name = $_GET ["name"];
-$pokeapi = file_get_contents("https://pokeapi.co/api/v2/pokemon/".$name);
-var_dump($pokeapi);
-?>
+$Object = file_get_contents("https://pokeapi.co/api/v2/pokemon/".$name);
+$Species = file_get_contents("https://pokeapi.co/api/v2/pokemon-species/".$name);
 
+$pObject=json_decode($Object);
+$pSpecies = json_decode($Species);
+//var_dump($pObject);
+
+echo $pObject->name;
+echo $pSpecies->evolves_from_species->name;
+echo $pObject->sprites->front_default;
+
+$allMoves= array();
+
+for($i=0; $i< count($pObject->moves);$i++){
+    array_push($allMoves, $pObject->moves[$i]->move->name);
+}
+
+
+$fourMoves = array_rand($allMoves, min(4, count($allMoves)));
+echo implode("</br>",$fourMoves);
+
+//if(isset($_GET["name"])){
+  //  echo $name;
+//}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +41,7 @@ var_dump($pokeapi);
     <meta name="description" content="Poké-dex library to keep track of all the pokemons"><!--description that appears on google search-->
 </head>
 
-<body>s
+<body>
 <h1>The greatest Poké-dex</h1>
 
 <section class="container">
