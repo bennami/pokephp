@@ -1,7 +1,10 @@
 <?php
 
-$name = $_GET name
-$pokeapi = file_get_contents("https://pokeapi.co/api/v2/pokemon/.$name.");
+//get input user
+
+$name = $_GET ["name"];
+$pokeapi = file_get_contents("https://pokeapi.co/api/v2/pokemon/".$name);
+var_dump($pokeapi);
 ?>
 
 
@@ -29,10 +32,10 @@ $pokeapi = file_get_contents("https://pokeapi.co/api/v2/pokemon/.$name.");
         </section>
 
         <section class="getinput">
-            <form method="get" action="" name = "name">
-            <input id="input" type="text" placeholder="type a pokemon name!">
+            <form method="get" action="">
+            <input id="input" type="text" name="name" placeholder="type a pokemon name!">
+            <button type="submit" value="submit" value="submit" id="inputBtn" class="btn" class="search">search</button>
             </form>
-            <button id="inputBtn" class="btn" class="search">search</button>
         </section>
     </section>
 
@@ -58,17 +61,10 @@ $pokeapi = file_get_contents("https://pokeapi.co/api/v2/pokemon/.$name.");
             <button id="nextbtn" class="btn" class="search">==></button>
         </section>
 
+     </section>
+
+
     </section>
 
-
-</section>
-
-
-
-
-
-
-
-<script src="assets/JS/script.js"></script>
 </body>
 </html>
