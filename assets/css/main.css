@@ -1,0 +1,129 @@
+* {
+  margin: 0;
+  font-family: "LoRes 12 OT", sans-serif;
+}
+
+h1 {
+  margin: 5vh;
+}
+
+@font-face {
+  font-family: "LoRes";
+  src: url("../fonts/LoRes12OT-BoldAltOakland.ttf");
+  font-style: normal;
+  font-weight: 100;
+}
+body .container {
+  display: flex;
+  width: 90vw;
+  height: 70vh;
+  justify-content: center;
+  margin: auto;
+}
+body .container .pokeIcon {
+  margin: auto;
+  margin-top: 22vmin;
+  position: relative;
+  width: 30%;
+}
+body .container .P1 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  background-image: url("../img/bg1-01.svg");
+  background-repeat: no-repeat;
+  width: 60vmin;
+  height: 70vmin;
+  object-fit: fill;
+  background-position: center;
+  text-align: center;
+}
+body .container .P1 .getinput {
+  margin: 18vh 3vw 0 0;
+  position: relative;
+}
+body .container .P1 #input {
+  border: black 0.7vmin solid;
+  border-radius: 5px;
+  padding: 1.2vw;
+  position: relative;
+}
+body .container .btn {
+  position: relative;
+  border: black 0.7vmin solid;
+  border-radius: 5px;
+  padding: 1.2vw;
+  background: #ffd39a;
+}
+body .container .btn:hover {
+  background: #ffa65b;
+  transition: all 0.2s;
+}
+body .container .P2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  background-image: url("../img/bg2-02.svg");
+  background-repeat: no-repeat;
+  width: 60vmin;
+  height: 70vmin;
+  background-position: center;
+  text-align: center;
+}
+body .container .P2 .description {
+  margin: 22vh 9vw 0 9vw;
+  position: relative;
+  font-size: smaller;
+}
+body .container .P2 .movesList, body .container .P2 .EvolutionIcon {
+  margin-top: 20vmin;
+  align-self: center;
+}
+body .container .P2 .evolutionIcon {
+  margin-left: 40%;
+}
+body .container .P2 .buttons {
+  grid-row: 2/3;
+  grid-column: 1/2;
+  margin: 20vmin 2vmin 0 28vmin;
+}
+body ul {
+  list-style-type: none;
+}
+@media only screen and (max-width: 600px) {
+  body .container {
+    display: block;
+    width: 90vw;
+    height: 90vmax;
+    justify-content: center;
+    margin: auto;
+  }
+  body .container .pokeIcon {
+    margin-top: 25vmin;
+  }
+  body .container .P1, body .container .P2 {
+    margin: auto;
+    width: 80vmin;
+    height: 90vmin;
+    text-align: center;
+  }
+  body .container .P1 .description, body .container .P2 .description {
+    margin: 30vmin 18vw 0 18vw;
+    position: relative;
+    font-size: smaller;
+  }
+  body .container .P1 .getinput, body .container .P2 .getinput {
+    margin: 15vh 3vw 0 0;
+    position: relative;
+  }
+  body .container .P1 .buttons, body .container .P2 .buttons {
+    grid-row: 2/3;
+    grid-column: 1/2;
+    margin: 20vmin 2vmin 0 35vmin;
+  }
+  body .container .P1 .evolutionIcon, body .container .P2 .evolutionIcon {
+    margin-left: 40%;
+  }
+}
+
+/*# sourceMappingURL=main.css.map */
