@@ -2,55 +2,58 @@
 ini_set("display_errors", "1");
 //get input user and pokeapi
 $name = $_GET ["name"];
+if(isset($_GET ['name'])){
+
+//get api and decode the json  in array
 $Object = file_get_contents("https://pokeapi.co/api/v2/pokemon/".$name);
 $Species = file_get_contents("https://pokeapi.co/api/v2/pokemon-species/".$name);
 
 $pObject=json_decode($Object);
 $pSpecies = json_decode($Species);
-//var_dump($pObject);
-
-echo $pObject->name;
-$pokeEvName = $pSpecies->evolves_from_species->name;
-
-$pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/".$pokeEvName);
-$pokeEv = json_decode($pokeEvApi);
-$pokeEvIcon = $pokeEv->sprites->front_default;
+}
+//get data from api
 $pokeIcon = $pObject->sprites->front_default;
 $id = $pObject->id;
-$allMoves= array();
 
+//get moves into array
+$allMoves= array();
 for($i=0; $i< count($pObject->moves);$i++){
     array_push($allMoves, $pObject->moves[$i]->move->name);
 }
 
-//randomize, get the minimum or max 4 moves of the allMoves length
+//randomize, get the minimum or max 4 moves of the allMoves length, put exception for ditto
 $fourMoves = [];
 $fourMoves = array_rand($allMoves, min(4, count($allMoves)));
 
 $movesArr = [];
 if($fourMoves === 0){
-   array_push($movesArr, $pObject->moves[0]->move->name) ;
+    array_push($movesArr, $pObject->moves[0]->move->name) ;
 }else{
-
-foreach ($fourMoves  as $value) {
-    array_push(  $movesArr, $pObject->moves[$value]->move->name);
+    foreach ($fourMoves  as $value) {
+        array_push(  $movesArr, $pObject->moves[$value]->move->name);
     }
 }
-
 
 //getting pokedescription
 for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
     if ($pSpecies->flavor_text_entries[$x]->language->name === "en") {
-      $pokeDescription = $pSpecies->flavor_text_entries[$x]->flavor_text;
+        $pokeDescription = $pSpecies->flavor_text_entries[$x]->flavor_text;
     }
 }
 
 
-
-
-//if(isset($_GET["name"])){
-  //  echo $name;
-//}
+//get evolution name pokemon api to get sprite
+if (isset($pSpecies->evolves_from_species->name)){
+    $pokeEvName = $pSpecies->evolves_from_species->name;
+    $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $pokeEvName);
+    $pokeEv = json_decode($pokeEvApi);
+    $pokeEvIcon = $pokeEv->sprites->front_default;
+$display =" ";
+}else{
+$pokeEvIcon ='';
+    $pokeEvName ='no pre evolution';
+    $display = 'display:none';
+}
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +76,7 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
     <section class="P1">
         <section class="pokemonIcon">
             <img src="<?php echo $pokeIcon ?>" alt="Poke icon" class="pokeIcon">
-            <p class="pokeName"></p>
+            <p class="pokeName"><?php echo $pObject->name; ?></p>
         </section>
 
         <section class="getinput">
@@ -97,7 +100,7 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
         </section>
 
         <section class="EvolutionIcon">
-            <img class="evolutionIcon" src="<?php echo $pokeEvIcon ?>" alt="evicon">
+            <img class="evolutionIcon" src="<?php echo $pokeEvIcon ?>" alt="evicon" style="<?php echo $display?>">
             <p class="evolutionName"></p>
         </section>
 
@@ -110,6 +113,6 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
 
 
     </section>
-
+<script src="assets/JS/toggle.js"></script>
 </body>
 </html>
