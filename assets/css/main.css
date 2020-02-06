@@ -79,9 +79,6 @@ body .container .P2 .movesList, body .container .P2 .EvolutionIcon {
   margin-top: 20vmin;
   align-self: center;
 }
-body .container .P2 .evolutionIcon {
-  margin-left: 40%;
-}
 body .container .P2 .buttons {
   grid-row: 2/3;
   grid-column: 1/2;
@@ -120,9 +117,6 @@ body ul {
     grid-row: 2/3;
     grid-column: 1/2;
     margin: 20vmin 2vmin 0 35vmin;
-  }
-  body .container .P1 .evolutionIcon, body .container .P2 .evolutionIcon {
-    margin-left: 40%;
   }
 }
 
