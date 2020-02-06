@@ -11,6 +11,10 @@ $pSpecies = json_decode($Species);
 
 echo $pObject->name;
 $pokeEvName = $pSpecies->evolves_from_species->name;
+
+$pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/".$pokeEvName);
+$pokeEv = json_decode($pokeEvApi);
+$pokeEvIcon = $pokeEv->sprites->front_default;
 $pokeIcon = $pObject->sprites->front_default;
 $id = $pObject->id;
 $allMoves= array();
@@ -20,13 +24,19 @@ for($i=0; $i< count($pObject->moves);$i++){
 }
 
 //randomize, get the minimum or max 4 moves of the allMoves length
+$fourMoves = [];
 $fourMoves = array_rand($allMoves, min(4, count($allMoves)));
-echo implode("</br>",$fourMoves);
 
+$movesArr = [];
+if($fourMoves === 0){
+   array_push($movesArr, $pObject->moves[0]->move->name) ;
+}else{
 
-    foreach ($fourMoves  as $value) {
-        $pObject->moves[$value]->move->name;
+foreach ($fourMoves  as $value) {
+    array_push(  $movesArr, $pObject->moves[$value]->move->name);
     }
+}
+
 
 //getting pokedescription
 for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
@@ -35,7 +45,7 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
     }
 }
 
-echo  $pokeDescription;
+
 
 
 //if(isset($_GET["name"])){
@@ -75,19 +85,19 @@ echo  $pokeDescription;
     </section>
 
     <section class="P2">
-    <p<?php echo $pokeEvName ?>></p>
+    <p><?php echo $pokeEvName ?></p>
         <section class="Descriptionbox">
-            <p class="description" <?php  echo  $pokeDescription ?>></p>
+            <p class="description"><?php  echo  $pokeDescription ?> </p>
         </section>
 
         <section class="movesList">
             <ul id="movesList">
-
+               <?php echo implode('</br>',$movesArr); ?>
             </ul>
         </section>
 
         <section class="EvolutionIcon">
-            <img class="evolutionIcon" src="" alt="evicon">
+            <img class="evolutionIcon" src="<?php echo $pokeEvIcon ?>" alt="evicon">
             <p class="evolutionName"></p>
         </section>
 
