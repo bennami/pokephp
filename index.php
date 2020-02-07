@@ -17,10 +17,14 @@ $evChainData = json_decode($evChain);
     //path to get evolutions, exceptions: eeve(7 first evolves to) and gloom(2 second evolves to)!
     echo $evChain->chain->evolves_to[$i]->species->name;
 }*/
- echo $evChainData->chain->evolves_to[0]->species->name;
-
+$evChainArr = array();
+for($i=0;$i < count($evChainData->chain->evolves_to);$i++){
+    array_push($evChainArr, $evChainData->chain->evolves_to[$i]->species->name);
+}
+//echo $evChainArr;
+implode('</br>', $evChainArr);
 //path to get the baby pokemon in the chain
- echo  $evChainData->chain->species->name;
+ $evChainData->chain->species->name;
 //get data from api
     $pokeIcon = $pObject->sprites->front_default;
     $id = $pObject->id;
