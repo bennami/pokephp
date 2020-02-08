@@ -43,7 +43,7 @@ else if($evChainData->chain->evolves_to[0] !== null && $evChainData->chain->spec
 }
 
 if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null){
-        for($i=0;$i < count($evChainData->chain->evolves_to);$i++) {
+        for($i=0;$i < count($evChainData->chain->evolves_to[0]->evolves_to);$i++) {
             array_push($evChainArr2, $evChainData->chain->evolves_to[0]->evolves_to[$i]->species->name);
         }
 }else{
