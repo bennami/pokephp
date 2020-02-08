@@ -1,41 +1,55 @@
 <?php
 ini_set("display_errors","1");
 //get input user and pokeapi
-
 if(isset($_GET ['name'])){
-    $name = $_GET ["name"];
+    $nameInput = $_GET ["name"];
+
+    //convert to Uppercase to lowercase
+    $name = strtolower($nameInput);
+
 //get api and decode the json  in array
 $Object = file_get_contents("https://pokeapi.co/api/v2/pokemon/".$name);
 $Species = file_get_contents("https://pokeapi.co/api/v2/pokemon-species/".$name);
-
 $pObject=json_decode($Object);
 $pSpecies = json_decode($Species);
-//get evolution chain
+
+//get evolution chain, still not done
 $evChain = file_get_contents($pSpecies->evolution_chain->url);
 $evChainData = json_decode($evChain);
 /*for($i=0;$i< count($evChain->chain->evolves_to);$i++){
-    //path to get evolutions, exceptions: eeve(7 first evolves to) and gloom(2 second evolves to)!
+    //path to get evolutions, exceptions: eevee(7 first evolves to) and gloom(2 second evolves to)!
     echo $evChain->chain->evolves_to[$i]->species->name;
 }*/
 $evChainArr = array();
-for($i=0;$i < count($evChainData->chain->evolves_to);$i++){
-    array_push($evChainArr, $evChainData->chain->evolves_to[$i]->species->name);
-}
-//echo $evChainArr;
-implode('</br>', $evChainArr);
-//path to get the baby pokemon in the chain
- $evChainData->chain->species->name;
-//get data from api
-    $pokeIcon = $pObject->sprites->front_default;
-    $id = $pObject->id;
+//if there are no evolutions
+if($evChainData->chain->evolves_to[0] == null){
+   array_push($evChainArr,'no evolutions' );
+}else{
+    $firstEvolution = $evChainData->chain->species->name;
 
-//get moves into array
+    for($i=0;$i < count($evChainData->chain->evolves_to[$i]);$i++){
+        array_push($evChainArr, $evChainData->chain->evolves_to[$i]->species->name);
+    }
+}
+
+var_dump( $firstEvolution,$evChainArr );
+
+
+//implode('</br>', $evChainArr);
+
+//path to get the baby pokemon in the chain, THIS WORKS
+  $evChainData->chain->species->name;
+
+  $pokeIcon = $pObject->sprites->front_default;
+  $id = $pObject->id;
+
+//get moves into array, this works
     $allMoves= array();
     for($i=0; $i< count($pObject->moves);$i++){
         array_push($allMoves, $pObject->moves[$i]->move->name);
     }
 
-//randomize, get the minimum or max 4 moves of the allMoves length, put exception for ditto
+//randomize moves, get the minimum or max 4 moves of the allMoves length, put exception for ditto
     $fourMoves = [];
     $fourMoves = array_rand($allMoves, min(4, count($allMoves)));
 
@@ -54,7 +68,6 @@ implode('</br>', $evChainArr);
             $pokeDescription = $pSpecies->flavor_text_entries[$x]->flavor_text;
         }
     }
-
 
 //get evolution name pokemon api to get sprite
     if (isset($pSpecies->evolves_from_species->name)){
