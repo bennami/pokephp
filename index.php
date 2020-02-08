@@ -16,49 +16,76 @@ $pSpecies = json_decode($Species);
 //get evolution chain, still not done
 $evChain = file_get_contents($pSpecies->evolution_chain->url);
 $evChainData = json_decode($evChain);
-/*for($i=0;$i< count($evChain->chain->evolves_to);$i++){
-    //path to get evolutions, exceptions: eevee(7 first evolves to) and gloom(2 second evolves to)!
-    echo $evChain->chain->evolves_to[$i]->species->name;
-}*/
+
+//
+$firstEvolution =  array();
 $evChainArr1 = array();
 $evChainArr2 =array();
+$imgSrc1 = array();
+$imgSrc2 = array();
+$imgSrc3 = array();
+
 //if there are no evolutions, it means that we are displaying baby
 if($evChainData->chain->evolves_to[0] == null && $evChainData->chain->species->name == $name){
-   array_push($evChainArr,'no evolutions' );
-   $firstEvolution = $name.' is the baby, no pre evolution';
+    array_push($evChainArr1,'no evolutions' );
+    array_push($firstEvolution, $name);
+    $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
+    $pokeEv = json_decode($pokeEvApi);
+    $pokeIconBaby = $pokeEv->sprites->front_default;
+    array_push($imgSrc1, $pokeIconBaby);
 }
 
-//if there are evolutions and we have the baby
-else if($evChainData->chain->evolves_to[0] !== null && $evChainData->chain->species->name == $name) {
-    $firstEvolution = $name.' is the baby, no pre evolution';
-    for($i=0;$i <= count($evChainData->chain->evolves_to)-1;$i++){
-        array_push($evChainArr1, $evChainData->chain->evolves_to[$i]->species->name);
+//if there are evolutions and we have the baby, name is first ev
+else if($evChainData->chain->evolves_to[0] !== null ) {
+
+    if ($evChainData->chain->species->name == $name) {
+        array_push($firstEvolution, $name);
+        $nameBaby = implode('<br>',$firstEvolution );
+
+    } else {
+        array_push($firstEvolution, $evChainData->chain->species->name);
+        $nameBaby = implode('<br>',$firstEvolution );
+
     }
 
-}else if ($evChainData->chain->evolves_to[0] !== null){
-    $firstEvolution = $evChainData->chain->species->name;
-    for($i=0;$i <= count($evChainData->chain->evolves_to)-1;$i++){
+    $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $nameBaby);
+    $pokeEv = json_decode($pokeEvApi);
+    $pokeIconBaby = $pokeEv->sprites->front_default;
+    array_push($imgSrc1, $pokeIconBaby);
+    for ($i = 0; $i <= count($evChainData->chain->evolves_to) - 1; $i++) {
         array_push($evChainArr1, $evChainData->chain->evolves_to[$i]->species->name);
+        foreach ($evChainArr1 as $name) {
+            $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
+            $pokeEv = json_decode($pokeEvApi);
+            $pokeIconBaby = $pokeEv->sprites->front_default;
+            array_push($imgSrc2, $pokeIconBaby);
+        }
+
     }
+
 }
 
 if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null){
         for($i=0;$i < count($evChainData->chain->evolves_to[0]->evolves_to);$i++) {
             array_push($evChainArr2, $evChainData->chain->evolves_to[0]->evolves_to[$i]->species->name);
+            foreach ($evChainArr2 as $name){
+                $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
+                $pokeEv = json_decode($pokeEvApi);
+                $pokeIconBaby2 = $pokeEv->sprites->front_default;
+                array_push($imgSrc3, $pokeIconBaby2);
+            }
         }
 }else{
         array_push($evChainArr2, 'no more evolutions');
     }
+var_dump($imgSrc1, $imgSrc2, $imgSrc3);
+//turn to string
+$evBaby = implode('</br>', $firstEvolution);
+$ev2 = implode('</br>', $evChainArr1);
+$ev3 = implode('</br>', $evChainArr2);
 
 
-var_dump( $firstEvolution,$evChainArr1,$evChainArr2 );
-
-
-//implode('</br>', $evChainArr);
-
-//path to get the baby pokemon in the chain, THIS WORKS
-  $evChainData->chain->species->name;
-
+//get pokeIcon and id
   $pokeIcon = $pObject->sprites->front_default;
   $id = $pObject->id;
 
@@ -71,7 +98,6 @@ var_dump( $firstEvolution,$evChainArr1,$evChainArr2 );
 //randomize moves, get the minimum or max 4 moves of the allMoves length, put exception for ditto
     $fourMoves = [];
     $fourMoves = array_rand($allMoves, min(4, count($allMoves)));
-
     $movesArr = [];
     if($fourMoves === 0){
         array_push($movesArr, $pObject->moves[0]->move->name) ;
@@ -81,7 +107,7 @@ var_dump( $firstEvolution,$evChainArr1,$evChainArr2 );
         }
     }
 
-//getting pokedescription
+//getting poke description in english
     for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
         if ($pSpecies->flavor_text_entries[$x]->language->name === "en") {
             $pokeDescription = $pSpecies->flavor_text_entries[$x]->flavor_text;
@@ -149,7 +175,7 @@ var_dump( $firstEvolution,$evChainArr1,$evChainArr2 );
 
         <section class="EvolutionIcon">
             <img class="evolutionIcon" src="<?php echo $pokeEvIcon ?>" alt="evicon" style="<?php echo $display?>">
-            <p class="evolutionName"><?php echo $pokeEvName ?></p>
+            <p class="evolutionName"><?php  echo $evBaby.'<br>'. $ev2.'<br>'. $ev3; ?></p>
         </section>
 
         <section class="buttons">
