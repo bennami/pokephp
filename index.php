@@ -22,29 +22,31 @@ $evChainData = json_decode($evChain);
 }*/
 $evChainArr1 = array();
 $evChainArr2 =array();
-//if there are no evolutions
-if($evChainData->chain->evolves_to[0] == null){
+//if there are no evolutions, it means that we are displaying baby
+if($evChainData->chain->evolves_to[0] == null && $evChainData->chain->species->name == $name){
    array_push($evChainArr,'no evolutions' );
+   $firstEvolution = $name.' is the baby, no pre evolution';
+}
 
-}else if($evChainData->chain->species->name == $name) {
+//if there are evolutions and we have the baby
+else if($evChainData->chain->evolves_to[0] !== null && $evChainData->chain->species->name == $name) {
     $firstEvolution = $name.' is the baby, no pre evolution';
-    if( $evChainData->chain->evolves_to[0] !== null){
-        for($i=0;$i <= count($evChainData->chain->evolves_to)-1;$i++){
-            array_push($evChainArr1, $evChainData->chain->evolves_to[$i]->species->name);
-        }
+    for($i=0;$i <= count($evChainData->chain->evolves_to)-1;$i++){
+        array_push($evChainArr1, $evChainData->chain->evolves_to[$i]->species->name);
     }
-    if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null){
-        for($i=0;$i < count($evChainData->chain->evolves_to[$i]);$i++){
+
+}else if ($evChainData->chain->evolves_to[0] !== null && $evChainData->chain->species->name !== $name){
+    $firstEvolution = $evChainData->chain->species->name;
+
+}
+
+if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null){
+        for($i=0;$i < count($evChainData->chain->evolves_to);$i++) {
             array_push($evChainArr2, $evChainData->chain->evolves_to[0]->evolves_to[$i]->species->name);
         }
-
-    }else{
+}else{
         array_push($evChainArr2, 'no more evolutions');
     }
-
-}else{
-    $firstEvolution = $evChainData->chain->species->name;
-}
 
 
 var_dump( $firstEvolution,$evChainArr1,$evChainArr2 );
