@@ -25,50 +25,54 @@ $imgSrc1 = array();
 $imgSrc2 = array();
 $imgSrc3 = array();
 
-
-
-//if there are evolutions and we have the baby, name is first ev
+//if there is evolution, check if input name is baby or not
  if($evChainData->chain->evolves_to[0] !== null ) {
 
     if ($evChainData->chain->species->name == $name) {
         array_push($firstEvolution, $name);
         $nameBaby = implode('<br>',$firstEvolution );
-
     } else {
         array_push($firstEvolution, $evChainData->chain->species->name);
         $nameBaby = implode('<br>',$firstEvolution );
-
     }
 
+    //get img for baby
     $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $nameBaby);
     $pokeEv = json_decode($pokeEvApi);
     $pokeIconBaby = $pokeEv->sprites->front_default;
     array_push($imgSrc1, $pokeIconBaby);
+
+    //for each evolution1 get name
     for ($i = 0; $i <= count($evChainData->chain->evolves_to) - 1; $i++) {
         array_push($evChainArr1, $evChainData->chain->evolves_to[$i]->species->name);
-        foreach ($evChainArr1 as $name) {
-            $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
-            $pokeEv = json_decode($pokeEvApi);
-            $pokeIconBaby = $pokeEv->sprites->front_default;
-            array_push($imgSrc2, $pokeIconBaby);
-        }
-
     }
+    //get icon of each evolution name
+     foreach ($evChainArr1 as $name) {
+         $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
+         $pokeEv = json_decode($pokeEvApi);
+         $pokeIconBaby = $pokeEv->sprites->front_default;
+         array_push($imgSrc2, $pokeIconBaby);
+     }
+}else{
+     array_push($imgSrc1, 'no more evolutions');
+     array_push($imgSrc2, 'no more evolutions');
+ }
 
-}
-
+//If there is evolution2, get name and get icon
 if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null){
         for($i=0;$i < count($evChainData->chain->evolves_to[0]->evolves_to);$i++) {
             array_push($evChainArr2, $evChainData->chain->evolves_to[0]->evolves_to[$i]->species->name);
-            foreach ($evChainArr2 as $name){
-                $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
-                $pokeEv = json_decode($pokeEvApi);
-                $pokeIconBaby2 = $pokeEv->sprites->front_default;
-                array_push($imgSrc3, $pokeIconBaby2);
-            }
         }
+    foreach ($evChainArr2 as $name){
+        $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
+        $pokeEv = json_decode($pokeEvApi);
+        $pokeIconBaby2 = $pokeEv->sprites->front_default;
+        array_push($imgSrc3, $pokeIconBaby2);
+    }
 }else{
-        array_push($evChainArr2, 'no more evolutions');
+
+    array_push($evChainArr2, 'no more evolutions');
+    array_push($imgSrc3, 'no more evolutions');
     }
 var_dump($imgSrc1, $imgSrc2, $imgSrc3);
 //turn to string
