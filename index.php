@@ -25,18 +25,10 @@ $imgSrc1 = array();
 $imgSrc2 = array();
 $imgSrc3 = array();
 
-//if there are no evolutions, it means that we are displaying baby
-if($evChainData->chain->evolves_to[0] == null && $evChainData->chain->species->name == $name){
-    array_push($evChainArr1,'no evolutions' );
-    array_push($firstEvolution, $name);
-    $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
-    $pokeEv = json_decode($pokeEvApi);
-    $pokeIconBaby = $pokeEv->sprites->front_default;
-    array_push($imgSrc1, $pokeIconBaby);
-}
+
 
 //if there are evolutions and we have the baby, name is first ev
-else if($evChainData->chain->evolves_to[0] !== null ) {
+ if($evChainData->chain->evolves_to[0] !== null ) {
 
     if ($evChainData->chain->species->name == $name) {
         array_push($firstEvolution, $name);
