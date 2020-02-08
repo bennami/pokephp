@@ -35,9 +35,11 @@ else if($evChainData->chain->evolves_to[0] !== null && $evChainData->chain->spec
         array_push($evChainArr1, $evChainData->chain->evolves_to[$i]->species->name);
     }
 
-}else if ($evChainData->chain->evolves_to[0] !== null && $evChainData->chain->species->name !== $name){
+}else if ($evChainData->chain->evolves_to[0] !== null){
     $firstEvolution = $evChainData->chain->species->name;
-
+    for($i=0;$i <= count($evChainData->chain->evolves_to)-1;$i++){
+        array_push($evChainArr1, $evChainData->chain->evolves_to[$i]->species->name);
+    }
 }
 
 if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null){
