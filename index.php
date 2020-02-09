@@ -175,7 +175,10 @@ var_dump($allIcons);
 
         <section class="EvolutionIcon">
             <?php  foreach ($allIcons as $src) {
-                echo '<img src='.$src.'>';
+                if($src == 'no more evolutions'){
+                    echo '<img src="'.$src.'" style="display:none;">';
+                }else{echo '<img src='.$src.'>';}
+
             } ?>
             <p class="evolutionName"><?php  echo $evBaby.'<br>'. $ev2.'<br>'. $ev3; ?></p>
         </section>
