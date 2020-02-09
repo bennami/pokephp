@@ -1,26 +1,29 @@
 <?php
 ini_set("display_errors","1");
-//get input user and pokeapi
+
+//get input user and start pokeapi when input is submitted
 if(isset($_GET ['name'])){
-    $nameInput = $_GET ["name"];
+$nameInput = $_GET ["name"];
 
-    //convert to Uppercase to lowercase
-    $name = strtolower($nameInput);
+//convert to Uppercase to lowercase
+$name = strtolower($nameInput);
 
-//get api and decode the json  in array
+//get api and decode the json  into array
 $Object = file_get_contents("https://pokeapi.co/api/v2/pokemon/".$name);
 $Species = file_get_contents("https://pokeapi.co/api/v2/pokemon-species/".$name);
 $pObject=json_decode($Object);
 $pSpecies = json_decode($Species);
 
-//get evolution chain, still not done
+//get evolution chain
 $evChain = file_get_contents($pSpecies->evolution_chain->url);
 $evChainData = json_decode($evChain);
 
-//
+//set some important variables, evolution chain has three parts: first evolution aka the baby, 2nd evolution array and 3rd evolution array
 $firstEvolution =  array();
 $evChainArr1 = array();
 $evChainArr2 =array();
+
+//push src of icons into these arrays
 $imgSrc1 = array();
 $imgSrc2 = array();
 $imgSrc3 = array();
@@ -31,9 +34,11 @@ $imgSrc3 = array();
     if ($evChainData->chain->species->name == $name) {
         array_push($firstEvolution, $name);
         $nameBaby = implode('<br>',$firstEvolution );
-    } else {
+    } else if($evChainData->chain->species->name !== null) {
         array_push($firstEvolution, $evChainData->chain->species->name);
         $nameBaby = implode('<br>',$firstEvolution );
+    }else{
+         $nameBaby =$name;
     }
 
     //get img for baby
@@ -43,7 +48,7 @@ $imgSrc3 = array();
     array_push($imgSrc1, $pokeIconBaby);
 
     //for each evolution1 get name
-    for ($i = 0; $i <= count($evChainData->chain->evolves_to) - 1; $i++) {
+    for ($i = 0; $i <= count($evChainData->chain->evolves_to)- 1; $i++) {
         array_push($evChainArr1, $evChainData->chain->evolves_to[$i]->species->name);
     }
     //get icon of each evolution name
@@ -54,35 +59,35 @@ $imgSrc3 = array();
          array_push($imgSrc2, $pokeIconBaby);
      }
 }else{
-     array_push($imgSrc1, 'no more evolutions');
+   //  array_push($imgSrc1, 'no more evolutions');
      array_push($imgSrc2, 'no more evolutions');
  }
 
-//If there is evolution2, get name and get icon
+//check If there is evolution2, get name and get icon
 if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null){
         for($i=0;$i < count($evChainData->chain->evolves_to[0]->evolves_to);$i++) {
             array_push($evChainArr2, $evChainData->chain->evolves_to[0]->evolves_to[$i]->species->name);
         }
-    foreach ($evChainArr2 as $name){
+        foreach ($evChainArr2 as $name){
         $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
         $pokeEv = json_decode($pokeEvApi);
         $pokeIconBaby2 = $pokeEv->sprites->front_default;
         array_push($imgSrc3, $pokeIconBaby2);
+        }
+    }else{
+        array_push($evChainArr2, 'no more evolutions');
+        array_push($imgSrc3, 'no more evolutions');
     }
-}else{
-
-    array_push($evChainArr2, 'no more evolutions');
-    array_push($imgSrc3, 'no more evolutions');
-    }
-var_dump($imgSrc1, $imgSrc2, $imgSrc3);
-//turn to string
+//var_dump($imgSrc1, $imgSrc2, $imgSrc3);
+//turn to string to echo in html
 $evBaby = implode('</br>', $firstEvolution);
 $ev2 = implode('</br>', $evChainArr1);
 $ev3 = implode('</br>', $evChainArr2);
+$allIcons = array_merge($imgSrc1,$imgSrc2,$imgSrc3);
+var_dump($allIcons);
 
-
-//get pokeIcon and id
-  $pokeIcon = $pObject->sprites->front_default;
+//get id and input icon src
+    $pokeIcon = $pObject->sprites->front_default;
   $id = $pObject->id;
 
 //get moves into array, this works
@@ -124,14 +129,15 @@ $ev3 = implode('</br>', $evChainArr2);
     }
 }
 
-?>
 
+
+?>
+<!======HTML=======>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Poke-dex</title>
-
     <link rel="stylesheet" href="assets/css/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="assets/img/pokedex-icon.png"> <!--icon that appears on tab-->
@@ -141,24 +147,22 @@ $ev3 = implode('</br>', $evChainArr2);
 
 <body>
 <h1>The greatest Poké-dex</h1>
-
 <section class="container">
     <section class="P1">
         <section class="pokemonIcon">
-            <img src="<?php echo $pokeIcon ?>" alt="<?php echo $name ?>" class="pokeIcon">
-
+            <img src="<?php echo $pokeIcon?>" class="pokeIcon">
+            <p class="pokeName"><?php echo $pObject->name; ?></p>
         </section>
 
         <section class="getinput">
             <form method="get" action="">
             <input id="input" type="text" name="name" placeholder="type a pokemon name!">
-            <button type="submit" value="submit"  id="inputBtn" class="btn" class="search">search</button>
+            <button type="submit" value="submit"  id="inputBtn" class="btn search">search</button>
             </form>
         </section>
     </section>
 
     <section class="P2">
-
         <section class="Descriptionbox">
             <p class="description"><?php  echo  $pokeDescription ?> </p>
         </section>
@@ -170,20 +174,18 @@ $ev3 = implode('</br>', $evChainArr2);
         </section>
 
         <section class="EvolutionIcon">
-            <img class="evolutionIcon" src="<?php echo $pokeEvIcon ?>" alt="evicon" style="<?php echo $display?>">
+            <?php  foreach ($allIcons as $src) {
+                echo '<img src='.$src.'>';
+            } ?>
             <p class="evolutionName"><?php  echo $evBaby.'<br>'. $ev2.'<br>'. $ev3; ?></p>
         </section>
 
         <section class="buttons">
-            <p class="pokeName"><?php echo $pObject->name; ?></p>
-            <button id="previousbtn" class="btn" class="search"><==</button>
-            <button id="nextbtn" class="btn" class="search">==></button>
+            <button id="previousbtn" class="btn search"><==</button>
+            <button id="nextbtn" class="btn search">==></button>
         </section>
-
      </section>
-
-
-    </section>
+</section>
 <script src="assets/JS/toggle.js"></script>
 </body>
 </html>
