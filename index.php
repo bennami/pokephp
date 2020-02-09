@@ -1,14 +1,14 @@
 <?php
-ini_set("display_errors","1");
+ini_set("display_errors","1"); //this one always needs to be at line 2!
 
-//get input user and start pokeapi when input is submitted
+//get input user and start poke API  fetching when input is submitted
 if(isset($_GET ['name'])){
 $nameInput = $_GET ["name"];
 
-//convert to Uppercase to lowercase
+//convert input from Uppercase to lowercase to make API work
 $name = strtolower($nameInput);
 
-//get api and decode the json  into array
+//get api and decode the json  into array, we need the pokemon and species(for evolution chain) API link
 $Object = file_get_contents("https://pokeapi.co/api/v2/pokemon/".$name);
 $Species = file_get_contents("https://pokeapi.co/api/v2/pokemon-species/".$name);
 $pObject=json_decode($Object);
@@ -23,7 +23,7 @@ $firstEvolution =  array();
 $evChainArr1 = array();
 $evChainArr2 =array();
 
-//push src of icons into these arrays
+//push src of icons into these arrays to use later
 $imgSrc1 = array();
 $imgSrc2 = array();
 $imgSrc3 = array();
@@ -47,11 +47,10 @@ $imgSrc3 = array();
     $pokeIconBaby = $pokeEv->sprites->front_default;
     array_push($imgSrc1, $pokeIconBaby);
 
-    //for each evolution1 get name
+     //check If there is evolution1, get name and get icon
     for ($i = 0; $i <= count($evChainData->chain->evolves_to)- 1; $i++) {
         array_push($evChainArr1, $evChainData->chain->evolves_to[$i]->species->name);
     }
-    //get icon of each evolution name
      foreach ($evChainArr1 as $name) {
          $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
          $pokeEv = json_decode($pokeEvApi);
@@ -78,16 +77,16 @@ if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null){
         array_push($evChainArr2, 'no more evolutions');
         array_push($imgSrc3, 'no more evolutions');
     }
-//var_dump($imgSrc1, $imgSrc2, $imgSrc3);
+
 //turn to string to echo in html
 $evBaby = implode('</br>', $firstEvolution);
 $ev2 = implode('</br>', $evChainArr1);
 $ev3 = implode('</br>', $evChainArr2);
 $allIcons = array_merge($imgSrc1,$imgSrc2,$imgSrc3);
-var_dump($allIcons);
+//var_dump($allIcons);
 
 //get id and input icon src
-    $pokeIcon = $pObject->sprites->front_default;
+  $pokeIcon = $pObject->sprites->front_default;
   $id = $pObject->id;
 
 //get moves into array, this works
@@ -109,29 +108,16 @@ var_dump($allIcons);
     }
 
 //getting poke description in english
-    for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
-        if ($pSpecies->flavor_text_entries[$x]->language->name === "en") {
+for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
+    if ($pSpecies->flavor_text_entries[$x]->language->name === "en") {
             $pokeDescription = $pSpecies->flavor_text_entries[$x]->flavor_text;
         }
     }
-
-//get evolution name pokemon api to get sprite
-    if (isset($pSpecies->evolves_from_species->name)){
-        $pokeEvName = $pSpecies->evolves_from_species->name;
-        $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $pokeEvName);
-        $pokeEv = json_decode($pokeEvApi);
-        $pokeEvIcon = $pokeEv->sprites->front_default;
-        $display =" ";
-    }else{
-        $pokeEvIcon ='';
-        $pokeEvName ='no pre evolution';
-        $display = 'display:none';
-    }
 }
 
-
-
 ?>
+
+
 <!======HTML=======>
 <!DOCTYPE html>
 <html lang="en">
