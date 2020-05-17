@@ -130,7 +130,7 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
         </section>
         <section class="EvolutionIcon">
         <ul>
-            <?php for ($i=0;$i<= count($evolutionNames);$i++){
+            <?php for ($i=0;$i<= count($evolutionNames)-1;$i++){
                 echo '<li>'.'<img src="'.$allIcons[$i].'">'.'<p>'.$evolutionNames[$i].'</p>'.'</li>';
             }
             ?>
