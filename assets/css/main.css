@@ -1,9 +1,9 @@
 * {
   margin: 0;
   font-family: "LoRes 12 OT", sans-serif;
+  box-sizing: border-box;
 }
-
-h1 {
+* h1 {
   margin: 5vh;
 }
 
@@ -21,7 +21,6 @@ body .container {
   margin: auto;
 }
 body .container .pokeIcon {
-  margin: auto;
   margin-top: 22vmin;
   position: relative;
   width: 30%;
@@ -75,9 +74,16 @@ body .container .P2 .description {
   position: relative;
   font-size: smaller;
 }
-body .container .P2 .movesList, body .container .P2 .EvolutionIcon {
+body .container .P2 .movesList {
   margin-top: 20vmin;
   align-self: center;
+}
+body .container .P2 .EvolutionIcon {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+body .container .P2 .evolutionName {
+  display: flex;
 }
 body .container .P2 .buttons {
   grid-row: 2/3;

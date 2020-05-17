@@ -1,5 +1,5 @@
 <?php
-ini_set("display_errors","1"); //this one always needs to be at line 2!
+//ini_set("display_errors","1"); //this one always needs to be at line 2!
 
 //get input user and start poke API  fetching when input is submitted
 if(isset($_GET ['name'])){
@@ -18,84 +18,52 @@ $pSpecies = json_decode($Species);
 $evChain = file_get_contents($pSpecies->evolution_chain->url);
 $evChainData = json_decode($evChain);
 
-//set some important variables, evolution chain has three parts: first evolution aka the baby, 2nd evolution array and 3rd evolution array
-$firstEvolution =  array();
-$evChainArr1 = array();
-$evChainArr2 =array();
+$evolutionNames = array();
+$allIcons = array();
+$allMoves= array();
 
-//push src of icons into these arrays to use later
-$imgSrc1 = array();
-$imgSrc2 = array();
-$imgSrc3 = array();
-
-//if there is evolution, check if input name is baby or not
+//if there is evolution, check if input name is baby or not, then get names of evolution pokemon
  if($evChainData->chain->evolves_to[0] !== null ) {
-
-    if ($evChainData->chain->species->name == $name) {
-        array_push($firstEvolution, $name);
-        $nameBaby = implode('<br>',$firstEvolution );
-    } else if($evChainData->chain->species->name !== null) {
-        array_push($firstEvolution, $evChainData->chain->species->name);
-        $nameBaby = implode('<br>',$firstEvolution );
-    }else{
-         $nameBaby =$name;
-    }
-
-    //get img for baby
-    $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $nameBaby);
-    $pokeEv = json_decode($pokeEvApi);
-    $pokeIconBaby = $pokeEv->sprites->front_default;
-    array_push($imgSrc1, $pokeIconBaby);
-
-     //check If there is evolution1, get name and get icon
-    for ($i = 0; $i <= count($evChainData->chain->evolves_to)- 1; $i++) {
-        array_push($evChainArr1, $evChainData->chain->evolves_to[$i]->species->name);
-    }
-     foreach ($evChainArr1 as $name) {
-         $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
-         $pokeEv = json_decode($pokeEvApi);
-         $pokeIconBaby = $pokeEv->sprites->front_default;
-         array_push($imgSrc2, $pokeIconBaby);
+     if ($evChainData->chain->species->name == $name) {
+         array_push($evolutionNames, $name);
+         $nameBaby = implode('', $evolutionNames);
+     } else if ($evChainData->chain->species->name !== null) {
+         array_push($evolutionNames, $evChainData->chain->species->name);
+         $nameBaby = implode('', $evolutionNames);
+     } else {
+         $nameBaby = $name;
      }
-}else{
-   //  array_push($imgSrc1, 'no more evolutions');
-     array_push($imgSrc2, 'no more evolutions');
+     //check If there is evolution1, get names
+     for ($i = 0; $i <= count($evChainData->chain->evolves_to) - 1; $i++) {
+         array_push($evolutionNames, $evChainData->chain->evolves_to[$i]->species->name);
+     }
  }
 
-//check If there is evolution2, get name and get icon
-if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null){
-        for($i=0;$i < count($evChainData->chain->evolves_to[0]->evolves_to);$i++) {
-            array_push($evChainArr2, $evChainData->chain->evolves_to[0]->evolves_to[$i]->species->name);
-        }
-        foreach ($evChainArr2 as $name){
-        $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
-        $pokeEv = json_decode($pokeEvApi);
-        $pokeIconBaby2 = $pokeEv->sprites->front_default;
-        array_push($imgSrc3, $pokeIconBaby2);
-        }
-    }else{
-        array_push($evChainArr2, 'no more evolutions');
-        array_push($imgSrc3, 'no more evolutions');
+//check If there is evolution2, get names
+if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null) {
+    for ($i = 0; $i < count($evChainData->chain->evolves_to[0]->evolves_to); $i++) {
+        array_push($evolutionNames, $evChainData->chain->evolves_to[0]->evolves_to[$i]->species->name);
     }
+}
 
-//turn to string to echo in html
-$evBaby = implode('</br>', $firstEvolution);
-$ev2 = implode('</br>', $evChainArr1);
-$ev3 = implode('</br>', $evChainArr2);
-$allIcons = array_merge($imgSrc1,$imgSrc2,$imgSrc3);
-//var_dump($allIcons);
+//get sprites
+foreach ($evolutionNames as $name) {
+    $pokeEvApi = file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $name);
+    $pokeEv = json_decode($pokeEvApi);
+    $pokeIconBaby2 = $pokeEv->sprites->front_default;
+    array_push($allIcons, $pokeIconBaby2);
+}
 
 //get id and input icon src
   $pokeIcon = $pObject->sprites->front_default;
   $id = $pObject->id;
 
-//get moves into array, this works
-    $allMoves= array();
-    for($i=0; $i< count($pObject->moves);$i++){
-        array_push($allMoves, $pObject->moves[$i]->move->name);
-    }
+//get all moves
+for($i=0; $i< count($pObject->moves);$i++){
+    array_push($allMoves, $pObject->moves[$i]->move->name);
+}
 
-//randomize moves, get the minimum or max 4 moves of the allMoves length, put exception for ditto
+//randomize moves, get the minimum or max 4 moves of the allMoves, put exception for ditto
     $fourMoves = [];
     $fourMoves = array_rand($allMoves, min(4, count($allMoves)));
     $movesArr = [];
@@ -117,8 +85,7 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
 
 ?>
 
-
-<!======HTML=======>
+<!====== HTML =======>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -160,13 +127,18 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
         </section>
 
         <section class="EvolutionIcon">
-            <?php  foreach ($allIcons as $src) {
+
+         <?php  foreach ($allIcons as $src) {
                 if($src == 'no more evolutions'){
                     echo '<img src="'.$src.'" style="display:none;">';
                 }else{echo '<img src='.$src.'>';}
-
-            } ?>
-            <p class="evolutionName"><?php  echo $evBaby.'<br>'. $ev2.'<br>'. $ev3; ?></p>
+            }
+            ?>
+          <ul class="evolutionName">
+                <?php foreach ($evolutionNames as $evName){
+                    echo '<li>'.$evName.'</li>';
+                }
+                ?>
         </section>
 
         <section class="buttons">
