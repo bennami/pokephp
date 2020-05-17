@@ -24,10 +24,13 @@ $allMoves= array();
 
 //if there is evolution, check if input name is baby or not, then get names of evolution pokemon
  if($evChainData->chain->evolves_to[0] !== null ) {
+     //check if $name is baby
      if ($evChainData->chain->species->name == $name) {
          array_push($evolutionNames, $name);
          $nameBaby = implode('', $evolutionNames);
-     } else if ($evChainData->chain->species->name !== null) {
+     }
+     // if not baby, get baby name
+     else if ($evChainData->chain->species->name !== null) {
          array_push($evolutionNames, $evChainData->chain->species->name);
          $nameBaby = implode('', $evolutionNames);
      } else {
@@ -125,22 +128,14 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
                <?php echo implode('</br>',$movesArr); ?>
             </ul>
         </section>
-
         <section class="EvolutionIcon">
-
-         <?php  foreach ($allIcons as $src) {
-                if($src == 'no more evolutions'){
-                    echo '<img src="'.$src.'" style="display:none;">';
-                }else{echo '<img src='.$src.'>';}
+        <ul>
+            <?php for ($i=0;$i<= count($evolutionNames);$i++){
+                echo '<li>'.'<img src="'.$allIcons[$i].'">'.'<p>'.$evolutionNames[$i].'</p>'.'</li>';
             }
             ?>
-          <ul class="evolutionName">
-                <?php foreach ($evolutionNames as $evName){
-                    echo '<li>'.$evName.'</li>';
-                }
-                ?>
+            </ul>
         </section>
-
         <section class="buttons">
             <button id="previousbtn" class="btn search"><==</button>
             <button id="nextbtn" class="btn search">==></button>
