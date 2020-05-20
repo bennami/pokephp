@@ -1,11 +1,8 @@
 <?php
-//ini_set("display_errors","1"); //this one always needs to be at line 2!
+//ini_set("display_errors","1");
 
-//get input user and start poke API  fetching when input is submitted
 if(isset($_GET ['name'])){
 $nameInput = $_GET ["name"];
-
-//convert input from Uppercase to lowercase to make API work
 $name = strtolower($nameInput);
 
 //get api and decode the json  into array, we need the pokemon and species(for evolution chain) API link
@@ -37,13 +34,17 @@ $allMoves= array();
          $nameBaby = $name;
      }
      //check If there is evolution1, get names
-     for ($i = 0; $i <= count($evChainData->chain->evolves_to) - 1; $i++) {
-         array_push($evolutionNames, $evChainData->chain->evolves_to[$i]->species->name);
+     if($evChainData->chain->evolves_to[0] !== null) {
+         for ($i = 0; $i <= count($evChainData->chain->evolves_to) - 1; $i++) {
+             array_push($evolutionNames, $evChainData->chain->evolves_to[$i]->species->name);
+         }
      }
+ }else{
+     array_push($evolutionNames, 'no evolutions');
  }
 
 //check If there is evolution2, get names
-if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null) {
+    if($evChainData->chain->evolves_to[0]->evolves_to[0] !== null) {
     for ($i = 0; $i < count($evChainData->chain->evolves_to[0]->evolves_to); $i++) {
         array_push($evolutionNames, $evChainData->chain->evolves_to[0]->evolves_to[$i]->species->name);
     }
@@ -85,9 +86,7 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
         }
     }
 }
-
 ?>
-
 <!====== HTML =======>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,16 +99,16 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
     <meta name="author" content="Imanachu and Neilax">
     <meta name="description" content="Poké-dex library to keep track of all the pokemons"><!--description that appears on google search-->
 </head>
-
 <body>
 <h1>The greatest Poké-dex</h1>
 <section class="container">
     <section class="P1">
+        <section  class="decoFrame">
         <section class="pokemonIcon">
             <img src="<?php echo $pokeIcon?>" class="pokeIcon">
             <p class="pokeName"><?php echo $pObject->name; ?></p>
         </section>
-
+        </section>
         <section class="getinput">
             <form method="get" action="">
             <input id="input" type="text" name="name" placeholder="type a pokemon name!">
@@ -122,7 +121,6 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
         <section class="Descriptionbox">
             <p class="description"><?php  echo  $pokeDescription ?> </p>
         </section>
-
         <section class="movesList">
             <ul id="movesList">
                <?php echo implode('</br>',$movesArr); ?>
@@ -131,6 +129,9 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
         <section class="EvolutionIcon">
         <ul>
             <?php for ($i=0;$i<= count($evolutionNames)-1;$i++){
+                if(empty($evolutionNames)){
+                    $evolutionNames = array('no evolutions');
+                }
                 echo '<li>'.'<img src="'.$allIcons[$i].'">'.'<p>'.$evolutionNames[$i].'</p>'.'</li>';
             }
             ?>

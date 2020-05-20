@@ -24,39 +24,52 @@ body{
     justify-content: center;
     margin: auto;
 
-
     .P1{
-      background-color: #e54a52;
-      border-radius: 7px;
-      border:  3px solid black;
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr  1fr;
-     // background-image: url("../img/bg1-01.svg");
-      background-repeat: no-repeat;
-      width: 60vmin;
-      height: 100%;
-      object-fit: fill;
       background-position: center;
+      background-image: url("../img/bg1-01.svg");
+      background-repeat: no-repeat;
+      width: 50vmin;
+      height: 70vh;
+      object-fit: fill;
       text-align: center;
-      .pokemonIcon{
-        border-radius: 7px;
-        border:  3px solid black;
-        background: #ffe69a;
-        width: 30vh;
-        margin: 10vh auto 0 auto;
-        height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .decoFrame{
         display: flex;
-        justify-self: center;
         flex-direction: column;
-        justify-content: center;
-        align-content: center;
-        .pokeIcon{
-          position: relative;
-          width: 30%;
-          margin: 0 auto;
+        position: relative;
+        background-image: url("../img/decoframe.svg");
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 70%;
+        height: 32vh;
+        margin: 2rem auto 0 auto;
+        .pokemonIcon{
+          border-radius: 7px;
+          border:  3px solid black;
+          background: #ffe69a;
+          width: 80%;
+          margin:5vh auto 0 auto;
+          height: 18vh;
+          display: flex;
+          justify-self: center;
+          flex-direction: column;
+          justify-content: center;
+          align-content: center;
+          position:relative;
+          .pokeIcon{
+            position: relative;
+            width: 50%;
+            margin: 0 auto;
+          }
+          p{
+            position:relative;
+            margin: 0 auto;
+          }
         }
       }
+
       .getinput{
         margin: 2vh auto;
         position: relative;
@@ -144,10 +157,6 @@ body{
           position: relative;
           font-size: smaller;
 
-        }
-        .getinput{
-          margin: 15vh 3vw 0 0;
-          position: relative;
         }
         .buttons{
           grid-row: 2/3;
