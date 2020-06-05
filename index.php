@@ -97,6 +97,7 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="assets/img/pokedex-icon.png"> <!--icon that appears on tab-->
     <meta name="author" content="Imanachu and Neilax">
+
     <meta name="description" content="Poké-dex library to keep track of all the pokemons"><!--description that appears on google search-->
 </head>
 <body>
@@ -118,31 +119,32 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
     </section>
 
     <section class="P2">
-        <section class="Descriptionbox">
+        <section class=" box Descriptionbox">
             <p class="description"><?php  echo  $pokeDescription ?> </p>
         </section>
-        <section class="movesList">
+        <section class=" box movesList">
             <ul id="movesList">
                <?php echo implode('</br>',$movesArr); ?>
             </ul>
         </section>
-        <section class="EvolutionIcon">
-        <ul>
+        <section class=" box carouselEvolutions">
+        <div class="arrows prev"> <i class="fas fa-arrow-left"></i></div>
             <?php for ($i=0;$i<= count($evolutionNames)-1;$i++){
                 if(empty($evolutionNames)){
                     $evolutionNames = array('no evolutions');
                 }
-                echo '<li>'.'<img src="'.$allIcons[$i].'">'.'<p>'.$evolutionNames[$i].'</p>'.'</li>';
+                echo '<div class="imgSlide">'.'<img src="'.$allIcons[$i].'">'.'<p>'.$evolutionNames[$i].'</p>'.'</div>';
             }
             ?>
-            </ul>
+        <div class="arrows next"> <i class="fas fa-arrow-right"></i> </div>
         </section>
         <section class="buttons">
-            <button id="previousbtn" class="btn search"><==</button>
-            <button id="nextbtn" class="btn search">==></button>
+            <button id="previousbtn" class="btn search"><i class="fas fa-arrow-left"></i></button>
+            <button id="nextbtn" class="btn search"><i class="fas fa-arrow-right"></i></button>
         </section>
      </section>
 </section>
 <script src="assets/JS/toggle.js"></script>
+<script src="https://kit.fontawesome.com/805c4ec2ae.js" crossorigin="anonymous"></script>
 </body>
 </html>

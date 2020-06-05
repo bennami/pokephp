@@ -16,65 +16,65 @@
   font-weight: 100;
 }
 
-body{
-  .container{
+body {
+  .container {
     display: flex;
     width: 90vw;
     height: 70vh;
     justify-content: center;
     margin: auto;
 
-    .P1{
-      background-position: center;
-      background-image: url("../img/bg1-01.svg");
-      background-repeat: no-repeat;
+    .P1 {
+      background: url("../img/bg1-01.svg") center no-repeat;
       width: 50vmin;
       height: 70vh;
-      object-fit: fill;
       text-align: center;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      .decoFrame{
+
+      .decoFrame {
         display: flex;
         flex-direction: column;
-        position: relative;
         background-image: url("../img/decoframe.svg");
         background-position: center;
         background-repeat: no-repeat;
         width: 70%;
         height: 32vh;
         margin: 2rem auto 0 auto;
-        .pokemonIcon{
+
+        .pokemonIcon {
           border-radius: 7px;
-          border:  3px solid black;
+          border: 3px solid black;
           background: #ffe69a;
           width: 80%;
-          margin:5vh auto 0 auto;
+          margin: 5vh auto 0 auto;
           height: 18vh;
           display: flex;
           justify-self: center;
           flex-direction: column;
           justify-content: center;
           align-content: center;
-          position:relative;
-          .pokeIcon{
+
+          .pokeIcon {
             position: relative;
             width: 50%;
             margin: 0 auto;
           }
-          p{
-            position:relative;
+
+          p {
+            position: relative;
             margin: 0 auto;
           }
         }
       }
 
-      .getinput{
+      .getinput {
         margin: 2vh auto;
         position: relative;
       }
-      #input{
+
+      #input {
         border: black 3px solid;
         border-radius: 7px;
         padding: 1.2vw;
@@ -82,7 +82,8 @@ body{
       }
 
     }
-    .btn{
+
+    .btn {
       position: relative;
       border: black 3px solid;
       border-radius: 5px;
@@ -90,44 +91,64 @@ body{
       background: #ffd39a;
 
 
-    }.btn:hover{
-       background: #ffa65b;
-       transition: all 0.2s;
-     }
+    }
 
-    .P2{
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr  1fr;
-      background-image: url("../img/bg2-02.svg");
-      background-repeat: no-repeat;
-      width: 60vmin;
+    .btn:hover {
+      background: #ffa65b;
+      transition: all 0.2s;
+    }
+
+    .P2 {
+      display: flex;
+      flex-direction: column;
+      background: url("../img/bg2-02.svg") center no-repeat;
+      width: 50vmin;
       height: 70vmin;
-      background-position: center;
       text-align: center;
-.description{
-  margin: 22vh 9vw 0 9vw;
-  position: relative;
-  font-size: smaller;
+
+      .box{
+        border-radius: 7px;
+        border: 3px solid black;
+        background: #ffe69a;
+        width: 85%;
+        height: max-content;
+        margin: 22vh auto 0 auto;
+        font-size: smaller;
+        padding: 1rem;
+        position: relative;
+      }
+.carouselEvolutions{
+  .arrows {
+    position: absolute;
+    cursor: pointer;}
+   .prev {
+    left: 10px;
+  }
+
+  .next {
+    right: 10px;
+  }
 
 }
-      .movesList{
+
+
+   /*   .movesList {
         margin-top: 20vmin;
         align-self: center;
       }
-      .EvolutionIcon{
+
+      .EvolutionIcon {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr) );
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       }
-      .evolutionName{
+
+      .evolutionName {
         display: flex;
-      }
+      }*/
 
-      .buttons{
+      .buttons {
 
-        grid-row: 2/3;
-        grid-column: 1/2;
-        margin: 20vmin  2vmin 0 28vmin;
+        margin: 20vmin 2vmin 0 28vmin;
       }
 
     }
@@ -135,29 +156,26 @@ body{
   }
 
 
-  ul{
+  ul {
     list-style-type: none;
   }
-  @media only screen and (max-width: 600px) {
+}
+@media (max-width: 600px) {
+  body{
     .container {
 
       display: block;
-      width: 90vw;
+      width: 100vw;
       height: 90vmax;
       justify-content: center;
       margin: auto;
 
       .P1,.P2{
         margin:auto;
-        width: 80vmin;
-        height: 90vmin;
+        width: 90%;
+        height: 77%;
         text-align: center;
-        .description{
-          margin: 30vmin 18vw 0 18vw;
-          position: relative;
-          font-size: smaller;
 
-        }
         .buttons{
           grid-row: 2/3;
           grid-column: 1/2;
@@ -165,10 +183,15 @@ body{
         }
 
       }
+      .P2{
 
+      }
     }
+
 
   }
 
-}
+  }
+
+
 
