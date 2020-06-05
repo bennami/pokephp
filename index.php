@@ -110,7 +110,7 @@ for ($x = 0; $x < count($pSpecies->flavor_text_entries); $x++) {
             <p class="pokeName"><?php echo $pObject->name; ?></p>
         </section>
         </section>
-        <section class="getinput">
+        <section class="getInput">
             <form method="get" action="">
             <input id="input" type="text" name="name" placeholder="type a pokemon name!">
             <button type="submit" value="submit"  id="inputBtn" class="btn search">search</button>

@@ -1,10 +1,4 @@
-
 //things we need from html
-let pokeIcon = document.querySelector('.pokeIcon');
-let pokeName = document.querySelector('.pokeName');
-let pokeDescription = document.querySelector('.description');
-let evolutionIcon = document.querySelector('.evolutionIcon');
-let evolutionName = document.querySelector('.evolutionName');
 let evolutionDiv = document.querySelector('.carouselEvolutions');
 let descriptionDiv = document.querySelector('.Descriptionbox');
 let movesDiv = document.querySelector('.movesList');
@@ -12,7 +6,7 @@ let movesDiv = document.querySelector('.movesList');
 evolutionDiv.style.display = 'none';
 movesDiv.style.display = 'none';
 
-//search click event
+
 
 //toggle through info with buttons
 let descriptionCount = 0;
@@ -26,7 +20,7 @@ document.getElementById('nextbtn').addEventListener('click', function (
     }else if(descriptionCount === 1){
         descriptionCount++;
         descriptionDiv.style.display = 'none';
-        evolutionDiv.style.display = 'block';
+        evolutionDiv.style.display = 'inline-flex';
         movesDiv.style.display = 'none';
     }else {
         descriptionCount = 0;
@@ -40,7 +34,7 @@ document.getElementById('previousbtn').addEventListener('click', function (
     if(descriptionCount === 0){
         descriptionCount= 2;
         descriptionDiv.style.display = 'none';
-        evolutionDiv.style.display = 'block';
+        evolutionDiv.style.display = 'inline-flex';
         movesDiv.style.display = 'none';
     }else if(descriptionCount === 2){
         descriptionCount--;
@@ -56,7 +50,7 @@ document.getElementById('previousbtn').addEventListener('click', function (
 });
 
 
-///////evolutions slider
+//////////evolutions slider//////////////
 let sliderImgs = document.querySelectorAll(".imgSlide");
 let arrowRight =document.querySelector(".prev");
 let arrowLeft =  document.querySelector(".next");

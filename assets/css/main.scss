@@ -1,55 +1,50 @@
-
 *{
   margin: 0;
+  padding: 0;
   font-family: "LoRes 12 OT", sans-serif;
   box-sizing: border-box;
-  h1{
-    margin: 5vh;
-  }
-
+  h1{margin: 2rem;}
 }
 
 @font-face {
   font-family: "LoRes";
   src: url("../fonts/LoRes12OT-BoldAltOakland.ttf");
   font-style: normal;
-  font-weight: 100;
+  font-weight: 200;
 }
 
 body {
   .container {
     display: flex;
     width: 90vw;
-    height: 70vh;
+    height: 80vh;
     justify-content: center;
     margin: auto;
-
     .P1 {
-      background: url("../img/bg1-01.svg") center no-repeat;
+      background: url("../img/bg1-01.svg") bottom no-repeat;
       width: 50vmin;
       height: 70vh;
       text-align: center;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      position: relative;
 
       .decoFrame {
         display: flex;
         flex-direction: column;
-        background-image: url("../img/decoframe.svg");
-        background-position: center;
-        background-repeat: no-repeat;
-        width: 70%;
-        height: 32vh;
-        margin: 2rem auto 0 auto;
+        background: url("../img/decoframe.svg") center no-repeat;
+        width: 80%;
+        height: 60%;
+        margin: 3rem 1rem 0 1rem;
 
         .pokemonIcon {
           border-radius: 7px;
           border: 3px solid black;
           background: #ffe69a;
-          width: 80%;
-          margin: 5vh auto 0 auto;
-          height: 18vh;
+          width: 70%;
+          height: 50%;
+          margin: 7vh auto 0 auto;
           display: flex;
           justify-self: center;
           flex-direction: column;
@@ -69,7 +64,7 @@ body {
         }
       }
 
-      .getinput {
+      .getInput {
         margin: 2vh auto;
         position: relative;
       }
@@ -78,7 +73,7 @@ body {
         border: black 3px solid;
         border-radius: 7px;
         padding: 1.2vw;
-        position: relative;
+
       }
 
     }
@@ -89,8 +84,6 @@ body {
       border-radius: 5px;
       padding: 1.2vw;
       background: #ffd39a;
-
-
     }
 
     .btn:hover {
@@ -99,71 +92,87 @@ body {
     }
 
     .P2 {
+      background: url("../img/bg2-02.svg") bottom no-repeat;
+      width: 50vmin;
+      height: 70vh;
+      text-align: center;
       display: flex;
       flex-direction: column;
-      background: url("../img/bg2-02.svg") center no-repeat;
-      width: 50vmin;
-      height: 70vmin;
-      text-align: center;
+      justify-content: center;
+      position: relative;
 
       .box{
         border-radius: 7px;
         border: 3px solid black;
         background: #ffe69a;
         width: 85%;
-        height: max-content;
-        margin: 22vh auto 0 auto;
+        height: 40%;
+        margin: 19vh auto 0 auto;
         font-size: smaller;
         padding: 1rem;
         position: relative;
       }
-.carouselEvolutions{
-  .arrows {
-    position: absolute;
-    cursor: pointer;}
-   .prev {
-    left: 10px;
-  }
-
-  .next {
-    right: 10px;
-  }
-
-}
-
-
-   /*   .movesList {
-        margin-top: 20vmin;
-        align-self: center;
+      .description{
+        padding: 1rem;
       }
+      .carouselEvolutions{
+        align-items: center;
+        justify-content: space-around;
+        .arrows {
+          position: absolute;
+          cursor: pointer;
+          padding: 4rem;
+        }
+        .prev {
+            left: 10px;
+        }
+        .next {
+            right: 10px;
+        }
 
-      .EvolutionIcon {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       }
-
-      .evolutionName {
-        display: flex;
-      }*/
-
-      .buttons {
-
-        margin: 20vmin 2vmin 0 28vmin;
+      .buttons{
+          margin:2rem auto;
+          display: flex;
+          justify-content: left;
+          .btn{
+            margin-right: 0.5rem;
+          }
       }
-
     }
 
   }
 
-
-  ul {
-    list-style-type: none;
+}
+@media (max-width:800px ) {
+  body{
+    .container{
+      .P1{
+        height: 45vh;
+        .decoFrame{
+        height: 49%;
+        width: 81%;
+        margin: 3rem 1rem 1rem 1rem;
+          .pokemonIcon{
+            margin: 3vh auto 0 auto;
+            height: max-content;
+          }
+        }
+      }
+      .P2{
+        height: 45vh;
+        .box{
+          height: 44%;
+          margin: 16vh auto 0 auto;
+        }
+      }
+    }
   }
+
 }
 @media (max-width: 600px) {
   body{
     .container {
-
       display: block;
       width: 100vw;
       height: 90vmax;
@@ -171,19 +180,39 @@ body {
       margin: auto;
 
       .P1,.P2{
-        margin:auto;
-        width: 90%;
-        height: 77%;
-        text-align: center;
+        margin: auto;
+        width: 100%;
 
-        .buttons{
-          grid-row: 2/3;
-          grid-column: 1/2;
-          margin: 20vmin  2vmin 0 35vmin;
         }
+.P1{
+  .decoFrame{
+    position: relative;
+    margin: 3rem 0 2rem 6rem;
+    display: inline-flex;
+    height: 47%;
+    width: 58%;
+    .pokemonIcon{
+      margin: 2vh auto 0 auto;
+      height: 63%;
+    }
+  }
+  .buttons{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: end;
+    padding-right: 19vw;
+    .btn{
+      margin-right: 0.5rem;
+    }
+  }
+}
+.P2{
+  .box{
+    width: 50%;
+  }
+}
 
-      }
-      .P2{
+
 
       }
     }
@@ -191,7 +220,32 @@ body {
 
   }
 
+
+
+@media (max-width: 400px) {
+  body{
+.container{
+  .P1{
+    .decoFrame{
+      margin: 3rem 0 2rem 4rem;
+    }
+    .getInput{
+      margin: 0 10px 0 0;
+    }
+  }
+  .P2{
+    .box{
+      height:max-content;
+      width: 60%;
+      margin: 13vh auto 0 auto;
+    }
+    .buttons{
+      margin: 1rem auto;
+    }
+  }
+}
   }
 
+}
 
 
